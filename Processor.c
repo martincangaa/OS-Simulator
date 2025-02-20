@@ -167,19 +167,67 @@ void Processor_DecodeAndExecuteInstruction() {
 
 		// Instruction MEMADD
 		case MEMADD_INST:
+
+			// Tell the main memory controller from where
+			registerMAR_CPU=operand2;
+			// Send to the main memory controller the address in which the reading has to take place: use the address bus for this
+			Buses_write_AddressBus_From_To(CPU, MAINMEMORY);
+			// Tell the main memory controller to read
+			registerCTRL_CPU=CTRLREAD;
+			// Send to the main memory controller the operation
+			Buses_write_ControlBus_From_To(CPU,MAINMEMORY);
+
+
+			// Tell the main memory controller what
+			registerMBR_CPU.cell+=operand1;
+			// Send to the main memory controller the data to be written: use the data bus for this
+			Buses_write_DataBus_From_To(CPU, MAINMEMORY);
 			// Tell the main memory controller where
 			registerMAR_CPU=operand2;
 			// Send to the main memory controller the address in which the writing has to take place: use the address bus for this
 			Buses_write_AddressBus_From_To(CPU, MAINMEMORY);
-			// Tell the main memory controller what
-			registerMBR_CPU.cell=operand1;
-			// Send to the main memory controller the data to be written: use the data bus for this
-			Buses_write_DataBus_From_To(CPU, MAINMEMORY);
 			// Tell the main memory controller the operation
 			registerCTRL_CPU=CTRLWRITE;
 			// Send to the main memory controller the operation
 			Buses_write_ControlBus_From_To(CPU,MAINMEMORY);
 
+			registerAccumulator_CPU= registerMBR_CPU.cell;
+			registerPC_CPU++;
+			break;
+
+		// Instruction MEMADD
+		case MEMMUL_INST:
+
+			// Tell the main memory controller from where
+			registerMAR_CPU=operand2;
+			// Send to the main memory controller the address in which the reading has to take place: use the address bus for this
+			Buses_write_AddressBus_From_To(CPU, MAINMEMORY);
+			// Tell the main memory controller to read
+			registerCTRL_CPU=CTRLREAD;
+			// Send to the main memory controller the operation
+			Buses_write_ControlBus_From_To(CPU,MAINMEMORY);
+
+
+			// Tell the main memory controller what
+			registerMBR_CPU.cell*=operand1;
+			// Send to the main memory controller the data to be written: use the data bus for this
+			Buses_write_DataBus_From_To(CPU, MAINMEMORY);
+			// Tell the main memory controller where
+			registerMAR_CPU=operand2;
+			// Send to the main memory controller the address in which the writing has to take place: use the address bus for this
+			Buses_write_AddressBus_From_To(CPU, MAINMEMORY);
+			// Tell the main memory controller the operation
+			registerCTRL_CPU=CTRLWRITE;
+			// Send to the main memory controller the operation
+			Buses_write_ControlBus_From_To(CPU,MAINMEMORY);
+
+			registerAccumulator_CPU= registerMBR_CPU.cell;
+			registerPC_CPU++;
+			break;
+
+		// Instruction MUL
+		case MUL_INST:
+			registerAccumulator_CPU= operand1 * operand2;
 			registerPC_CPU++;
 			break;
 

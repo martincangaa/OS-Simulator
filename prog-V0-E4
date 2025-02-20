@@ -1,0 +1,11 @@
+12  // Size of the program (This is not true)
+    // the only thing the OS cares is that it isn't > 256
+ADD 10 0
+WRITE 121
+ADD 101 0
+WRITE 122
+MEMADD -1 121
+ZJUMP 3
+MEMADD 2 122
+JUMP -3
+HALT

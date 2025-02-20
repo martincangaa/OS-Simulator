@@ -43,11 +43,22 @@ void ComputerSystem_PowerOn(int argc, char *argv[]) {
 	
 	
 	FILE *programFile;
+	FILE *fileWithTheProgramName;
 	// Initialize processor registers
 	Processor_InitializeRegisters(initialValueForPCRegister, initialValueForAccumulatorRegister, initialValueForPSWRegister);
 	
-	// If PROGRAM_TO_BE_EXECUTED exists, is executed
-	programFile= fopen(PROGRAM_TO_BE_EXECUTED, "r");
+	// If the program in the first line of the PROGRAM_TO_BE_EXECUTED exists, is executed
+	char filename[255];
+	fileWithTheProgramName= fopen(PROGRAM_TO_BE_EXECUTED, "r");
+	
+	if (fgets(filename, LINEMAXIMUMLENGTH, fileWithTheProgramName) == NULL) {
+		fclose(fileWithTheProgramName);
+		ComputerSystem_PowerOff();
+			
+	} else {
+		filename[strcspn(filename, "\n")] = '\0';
+		programFile = fopen(filename, "r");
+	}
 	
 	// Check if programFile exists, if not, poweroff system
 	if (programFile==NULL)

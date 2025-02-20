@@ -1,0 +1,11 @@
+9   // Size of the program (This is not true)
+    // the only thing the OS cares is that it isn't > 256
+ADD 1 0 // get one in the accumulator
+WRITE 64 // write it to memory location 64
+ADD 10 0 
+WRITE 63
+MEMMUL 2 64
+MEMADD -1 63
+ZJUMP 2
+JUMP -3
+HALT
